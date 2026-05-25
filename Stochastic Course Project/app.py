@@ -1,58 +1,24 @@
 import streamlit as st
+from experiment_registry import list_experiments, run_experiment
 
-from streamlit_runner import run_baseline_experiment
+st.title("Stochastic Optimization Dashboard")
 
-
-# ============================================================
-# PAGE CONFIGURATION
-# ============================================================
-
-st.set_page_config(
-    page_title="Disaster Relief Stochastic Model",
-    layout="wide",
+experiment_name = st.selectbox(
+    "Select Experiment",
+    list_experiments()
 )
 
+if st.button("Run Experiment"):
+    st.write(f"Running: {experiment_name}")
 
-# ============================================================
-# PAGE TITLE
-# ============================================================
+    result = run_experiment(experiment_name)
 
-st.title("Disaster Relief Stochastic Optimization Model")
+    st.subheader("Console Output")
 
-st.markdown(
-    """
-    Current functionality:
-    - Run baseline experiment
-    - Generate standard output CSVs
-    """
-)
+    st.text_area("stdout", result["stdout"], height=300)
 
+    if result["stderr"]:
+        st.subheader("Errors")
+        st.text_area("stderr", result["stderr"], height=200)
 
-# ============================================================
-# BASELINE EXPERIMENT SECTION
-# ============================================================
-
-st.header("Baseline Experiment")
-
-
-if st.button("Run Baseline Experiment"):
-
-
-    with st.spinner("Running optimization model..."):
-
-        try:
-            run_baseline_experiment()
-            st.success("Baseline experiment completed successfully.")
-
-            st.markdown(
-                """
-                Output files were written to the `output/` directory.
-                """
-            )
-
-        except Exception as error:
-
-
-            st.error("Experiment execution failed.")
-
-            st.exception(error)
+    st.write("Exit code:", result["return_code"])
