@@ -8,7 +8,7 @@ st.set_page_config(page_title="Stochastic Optimization Dashboard", layout="cente
 
 st.title("Stochastic Optimization Dashboard")
 
-st.markdown("Run experiments and generate analysis visualizations.")
+
 
 # -------------------------
 # Experiment selection
