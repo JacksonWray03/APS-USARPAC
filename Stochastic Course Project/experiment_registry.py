@@ -37,9 +37,7 @@ def run_experiment(name: str):
     result = subprocess.run(
         [sys.executable, str(script_path)],
         cwd=str(BASE_DIR),
-        env=env,
-        capture_output=True,
-        text=True
+        env=env
     )
 
     return {

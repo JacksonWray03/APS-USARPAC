@@ -33,9 +33,10 @@ if st.button("Run Experiment"):
 st.divider()
 
 if st.button("Run ALL Experiments"):
-        st.write("Running full experiment suite...")
+    with st.spinner("Running full experiment suite..."):
         results = run_all_experiments()
-        st.write("All experiments completed.")
+
+    st.success("All experiments completed.")
 
 # -------------------------
 # Generate visuals
