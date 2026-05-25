@@ -1,5 +1,6 @@
 import streamlit as st
-from experiment_registry import list_experiments, run_experiment, run_all_experiments
+import pandas as pd
+from experiment_registry import list_experiments, run_experiment, run_all_experiments,EXPERIMENT_SCRIPTS
 from visualizations.generate_visuals import main as generate_visuals
 from pathlib import Path
 
@@ -29,6 +30,20 @@ if st.button("Run Experiment"):
         run_experiment(experiment_name)
 
     st.success("Experiment complete")
+
+    # --- correct folder derivation ---
+    script_name = EXPERIMENT_SCRIPTS[experiment_name]  # e.g. experiment_e1_baseline.py
+    folder_name = script_name.replace("experiment_", "").replace(".py", "")  # E1_baseline
+
+    base_output = Path(__file__).resolve().parent / "output"
+    summary_path = base_output / folder_name / "summary.csv"
+
+    if summary_path.exists():
+        st.subheader("Summary Results")
+        df = pd.read_csv(summary_path)
+        st.dataframe(df)
+    else:
+        st.warning(f"No summary.csv found at {summary_path}")
 
 st.divider()
 
